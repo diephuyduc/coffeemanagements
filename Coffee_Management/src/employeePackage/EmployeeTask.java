@@ -1,6 +1,13 @@
 package employeePackage;
 
-import model.*;
+import model.Main;
+import model.order;
+import model.User;
+import model.desk;
+import model.products;
+import model.reports;
+import model.TableColorCellRenderer;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -64,19 +71,22 @@ public static  int idTable=0;
         jTable2 = new javax.swing.JTable();
         timeL = new javax.swing.JTextField();
         helloName = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
         jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 255, 255));
         setMinimumSize(new java.awt.Dimension(1366, 736));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jPanel1.setBackground(new java.awt.Color(153, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -128,9 +138,9 @@ public static  int idTable=0;
                 findTextKeyReleased(evt);
             }
         });
-        jPanel1.add(findText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 340, 30));
+        jPanel1.add(findText, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 390, 30));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả", "Hoa Quả", "Đồ Uống" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả", "Hoa Quả", "Đồ Uống", "Bánh Kẹo", " " }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -161,15 +171,22 @@ public static  int idTable=0;
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 390, 580));
 
         timeL.setEditable(false);
+        timeL.setBackground(new java.awt.Color(153, 255, 255));
         timeL.setBorder(null);
-        jPanel1.add(timeL, new org.netbeans.lib.awtextra.AbsoluteConstraints(1099, 0, 250, 30));
+        timeL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                timeLActionPerformed(evt);
+            }
+        });
+        jPanel1.add(timeL, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 250, 30));
 
         helloName.setEditable(false);
+        helloName.setBackground(new java.awt.Color(153, 255, 255));
         helloName.setBorder(null);
-        jPanel1.add(helloName, new org.netbeans.lib.awtextra.AbsoluteConstraints(900, 0, 190, 30));
+        jPanel1.add(helloName, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 190, 30));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/employeePackage/icons8-search-16.png"))); // NOI18N
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 20, 40, 30));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/u.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 0, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 770));
 
@@ -178,13 +195,31 @@ public static  int idTable=0;
 
         jMenuBar1.setPreferredSize(new java.awt.Dimension(20, 21));
 
-        jMenu1.setText("File");
+        jMenu1.setText("Home");
 
         jMenuItem1.setText("Thông Báo");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuItem3.setText("Danh sách liên lạc");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem3);
+
+        jMenuItem4.setText("Hóa Đơn");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem4);
 
         jMenuBar1.add(jMenu1);
 
@@ -213,7 +248,9 @@ public static  int idTable=0;
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-      idTable = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 1);
+      // Lấy id của table được chọn
+      //Nếu trạng thái ban đầu của bàn là sãn sàng thì hiện ra bảng thông báo lựa chọn có muốn thay đổi trạng thái hay không?
+        idTable = (int) jTable1.getValueAt(jTable1.getSelectedRow(), 1);
      count++;
      try{
            Class.forName("com.mysql.jdbc.Driver");
@@ -223,7 +260,7 @@ public static  int idTable=0;
             pr.setInt(1, idTable);
             ResultSet rs = pr.executeQuery();
             if(rs.next()){
-               // System.out.println(rs.getString());
+               
                 if(rs.getString(3).compareTo("Sẵn Sàng")==0){
                 String a= "'CÓ KHÁCH'?";
                 int jd = JOptionPane.showConfirmDialog(null, "Bạn có muốn chuyển trạng thái bàn "+a, "Trạng Thái Bàn", JOptionPane.YES_NO_CANCEL_OPTION);
@@ -272,6 +309,13 @@ dataOfBill(idTable);
             }
         }
  }
+ else if(jComboBox1.getSelectedItem().toString().compareTo("Bánh Kẹo")==0){
+     for(int i=0; i<productsList.size(); i++){
+            if(productsList.get(i).productLine.compareTo("Bánh Kẹo")==0 && productsList.get(i).productName.contains(findText.getText())){
+            productTempt.add(new products(productsList.get(i).productCode, productsList.get(i).productName,productsList.get(i).productLine, productsList.get(i).price));
+            }
+        }
+ }
  else{
       for(int i=0; i<productsList.size(); i++){
             if(productsList.get(i).productName.toLowerCase().contains(findText.getText().toLowerCase())){
@@ -293,6 +337,30 @@ dataOfBill(idTable);
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
 loadProductInTable();        // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox1ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        showContacts c = new showContacts();
+        c.main();
+
+
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+report r = new report();
+    r.main();
+// TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void timeLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_timeLActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_timeLActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+      showOrderDetail so = new showOrderDetail();
+      so.main();
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -334,14 +402,15 @@ loadProductInTable();        // TODO add your handling code here:
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField findText;
     public javax.swing.JTextField helloName;
-    public javax.swing.JButton jButton1;
     public javax.swing.JComboBox<String> jComboBox1;
+    public javax.swing.JLabel jLabel1;
     public javax.swing.JMenu jMenu1;
     public javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
     public javax.swing.JMenuItem jMenuItem1;
     public javax.swing.JMenuItem jMenuItem2;
     public javax.swing.JMenuItem jMenuItem3;
+    public javax.swing.JMenuItem jMenuItem4;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JScrollPane jScrollPane3;
@@ -381,6 +450,8 @@ loadProductInTable();        // TODO add your handling code here:
          );
           
       }
+     TableColorCellRenderer renderer = new TableColorCellRenderer();
+     jTable1.setDefaultRenderer(Object.class, renderer);
     
     }
 public  void loadProductInTable(){
@@ -425,6 +496,18 @@ public  void loadProductInTable(){
           
       }}
        }
+       
+              else if(jComboBox1.getSelectedItem().toString().compareTo("Bánh Kẹo")==0){
+         for(int i=0; i<productsList.size(); i++){
+          if(productsList.get(i).productLine.compareTo("Bánh Kẹo")==0){
+          model.addRow( new Object[]{
+              productsList.get(i).productCode, productsList.get(i).productName, productsList.get(i).productLine, productsList.get(i).price
+          
+      } );
+          
+      }}
+       }
+       
        else {
              for(int i=0; i<productsList.size(); i++){
          
@@ -520,8 +603,8 @@ public static  void CreateOrderCode(int dem, int idtable ){
     String time = sdf.format(date);
     System.out.println(time);
     SimpleDateFormat sdf1 = new SimpleDateFormat("yyy-MM-dd hh:mm:ss");
-   java.sql.Date sqlDate = new java.sql.Date(date.getDate());
-   String timeSQL = "B"+time;
+  String timeOfBill = sdf1.format(date);
+   String timeSQL = "B"+time+idtable;
    ordercodeString = timeSQL;
     try{
          System.out.print("Đya la them mot hoa don môi");
@@ -532,7 +615,7 @@ public static  void CreateOrderCode(int dem, int idtable ){
        pr.setString(1, timeSQL);
        pr.setInt(2, idtable);
        pr.setString(3, LogIn.saveIdString);
-       pr.setDate(4, sqlDate);
+       pr.setString(4, timeOfBill);
        pr.execute();
       con.close();
        

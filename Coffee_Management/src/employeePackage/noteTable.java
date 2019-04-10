@@ -8,6 +8,7 @@ package employeePackage;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JOptionPane;
 import model.Main;
 
@@ -22,6 +23,7 @@ public static noteTable nt;
      */
     public noteTable() {
         initComponents();
+        loadnote();
     }
 
     /**
@@ -114,6 +116,7 @@ public static noteTable nt;
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -125,13 +128,17 @@ noteText.setText("");        // TODO add your handling code here:
             try{
                 Class.forName("com.mysql.jdbc.Driver");
                 Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
-                String sql = "UPDATE desk SET comments =? WHERE desknumber=?";
+                String sql = "UPDATE desk SET comments = N? WHERE desknumber=?";
+                
                 PreparedStatement pr = con.prepareStatement(sql);
-                pr.setString(1, noteText.getText().toString() );
+                pr.setString(1, noteText.getText()  );
                 pr.setInt(2, EmployeeTask.idTable);
                 pr.execute();
                 nt.setVisible(false);
+                
                 con.close();
+                EmployeeTask.loaddataInTable();
+                EmployeeTask.loaddataInTable();
                 JOptionPane.showMessageDialog(null, "Update successful!");
             }
             catch(Exception e){
@@ -178,6 +185,27 @@ noteText.setText("");        // TODO add your handling code here:
         });
     }
 
+    public void loadnote(){
+    
+    try{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
+                String sql = "SELECT * FROM desk WHERE desknumber=?";
+                
+                PreparedStatement pr = con.prepareStatement(sql);
+                pr.setInt(1, EmployeeTask.idTable);
+                ResultSet rs = pr.executeQuery();
+                if(rs.next()){
+                noteText.setText(rs.getString(4));
+                }
+                
+                
+                con.close();
+               
+            }
+            catch(Exception e){
+            e.printStackTrace();}}
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * @author Administrator
  */
 public class Main {
-public static String url = "jdbc:mysql://localhost:3306/coffee";
+public static String url = "jdbc:mysql://localhost:3306/coffee?useUnicode=yes&characterEncoding=UTF-8";
 public static String usernameSQL = "root";
 public static String passwordSQL ="";
     /**

@@ -4,8 +4,19 @@
  * and open the template in the editor.
  */
 package employeePackage;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import model.*;
-
+import model.Main;
+import model.order;
+import model.User;
+import model.desk;
+import model.products;
+import model.reports;
+import model.TableColorCellRenderer;
 
 
 import java.sql.Connection;
@@ -40,7 +51,8 @@ public static order orderAdd;
 public numberOfBill count;
 public static ArrayList<products> productsList;
 public static float amount;
-public static enternumberProduct ep ;
+public static inforTable it ;
+public static enternumberProduct ep;
     /**
      * Creates new form inforTable
      */
@@ -49,10 +61,21 @@ public static enternumberProduct ep ;
         initComponents();
         clock();
         nameOfEmployee.setText(LogIn.saveUsernameString);
-        timeStart.setText(getStartDate());
+        timeStart(EmployeeTask.ordercodeString);
         loadProductInTable();
         loadDataInBill();
+        System.out.println("Day la id cua table "+EmployeeTask.idTable);
          nameOfTbale.setText(String.valueOf(EmployeeTask.idTable));
+    try {
+        saveNoteforPresentOrder(EmployeeTask.idTable);
+    } catch (Exception ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    try {
+        loadNoteForPresentOrder(EmployeeTask.idTable);
+    } catch (Exception ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
     }
 
     /**
@@ -82,7 +105,7 @@ public static enternumberProduct ep ;
         jPanel2 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        notePresentsText = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
@@ -99,6 +122,7 @@ public static enternumberProduct ep ;
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -134,7 +158,7 @@ public static enternumberProduct ep ;
 
         getContentPane().add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 78, 290, 460));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả", "Hoa Quả", "Đồ Uống" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tất Cả", "Hoa Quả", "Đồ Uống", "Bánh Kẹo" }));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
@@ -161,6 +185,9 @@ public static enternumberProduct ep ;
         jLabel3.setText("Tên nhân viên: ");
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(318, 42, -1, 19));
 
+        nameOfTbale.setEditable(false);
+        nameOfTbale.setBackground(new java.awt.Color(153, 255, 255));
+        nameOfTbale.setBorder(null);
         nameOfTbale.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameOfTbaleActionPerformed(evt);
@@ -168,6 +195,9 @@ public static enternumberProduct ep ;
         });
         getContentPane().add(nameOfTbale, new org.netbeans.lib.awtextra.AbsoluteConstraints(397, 12, 240, -1));
 
+        nameOfEmployee.setEditable(false);
+        nameOfEmployee.setBackground(new java.awt.Color(153, 255, 255));
+        nameOfEmployee.setBorder(null);
         nameOfEmployee.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nameOfEmployeeActionPerformed(evt);
@@ -182,6 +212,11 @@ public static enternumberProduct ep ;
         getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(640, 40, 106, 20));
 
         refreshButton.setText("Làm mới hóa đơn");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
         getContentPane().add(refreshButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 40, 140, -1));
 
         noteButton.setText("Ghi chú");
@@ -193,26 +228,42 @@ public static enternumberProduct ep ;
         getContentPane().add(noteButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 10, 140, -1));
 
         timeStart.setEditable(false);
+        timeStart.setBackground(new java.awt.Color(153, 255, 255));
+        timeStart.setBorder(null);
         getContentPane().add(timeStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 10, 200, -1));
 
         timeNow.setEditable(false);
+        timeNow.setBackground(new java.awt.Color(153, 255, 255));
+        timeNow.setBorder(null);
         getContentPane().add(timeNow, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 40, 200, -1));
 
+        jPanel2.setBackground(new java.awt.Color(153, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel11.setText("GHI CHÚ:");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 66, -1));
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane3.setViewportView(jTextArea1);
+        notePresentsText.setColumns(20);
+        notePresentsText.setLineWrap(true);
+        notePresentsText.setRows(5);
+        jScrollPane3.setViewportView(notePresentsText);
 
         jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 32, 272, 107));
 
         jButton3.setText("Cập nhật");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
 
         jButton4.setText("Xóa");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 150, 65, -1));
 
         jLabel12.setText("THANH TOÁN:");
@@ -240,7 +291,7 @@ public static enternumberProduct ep ;
         jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 114, -1, -1));
 
         payments.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        jPanel2.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 98, 343, 30));
+        jPanel2.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 98, 340, 30));
 
         paymentsButton.setText("In hóa đơn và thanh toán");
         paymentsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -278,6 +329,13 @@ public static enternumberProduct ep ;
                 return canEdit [columnIndex];
             }
         });
+        jTable3.setFocusable(false);
+        jTable3.setGridColor(new java.awt.Color(255, 255, 255));
+        jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTable3MouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(jTable3);
 
         getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 80, 780, 310));
@@ -291,6 +349,7 @@ public static enternumberProduct ep ;
         getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 10, 40, 20));
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void noteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_noteButtonActionPerformed
@@ -321,9 +380,7 @@ loadProductInTable();        // TODO add your handling code here:
         orderAdd = new order(EmployeeTask.ordercodeString, productcode, productname, 0, price);
         ep = new enternumberProduct();
         ep.main();
-      // ep.setVisible(true);
-      //  System.out.println(EmployeeTask.orderList.get(0).ordercode+ productcode+ productname+ price);
-        // TODO add your handling code here:
+      
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void paymentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentsButtonActionPerformed
@@ -350,6 +407,13 @@ loadProductInTable();        // TODO add your handling code here:
  else if(jComboBox1.getSelectedItem().toString().compareTo("Đồ Uống")==0){
       for(int i=0; i<productsList.size(); i++){
             if(productsList.get(i).productLine.compareTo("Đồ Uống")==0 && productsList.get(i).productName.contains(findText.getText())){
+            productTempt.add(new products(productsList.get(i).productCode, productsList.get(i).productName,productsList.get(i).productLine, productsList.get(i).price));
+            }
+        }
+ }
+ else if(jComboBox1.getSelectedItem().toString().compareTo("Bánh Kẹo")==0){
+     for(int i=0; i<productsList.size(); i++){
+            if(productsList.get(i).productLine.compareTo("Bánh Kẹo")==0 && productsList.get(i).productName.contains(findText.getText())){
             productTempt.add(new products(productsList.get(i).productCode, productsList.get(i).productName,productsList.get(i).productLine, productsList.get(i).price));
             }
         }
@@ -393,6 +457,13 @@ loadProductInTable();        // TODO add your handling code here:
             }
         }
  }
+ else if(jComboBox1.getSelectedItem().toString().compareTo("Bánh Kẹo")==0){
+     for(int i=0; i<productsList.size(); i++){
+            if(productsList.get(i).productLine.compareTo("Bánh Kẹo")==0 && productsList.get(i).productName.contains(findText.getText())){
+            productTempt.add(new products(productsList.get(i).productCode, productsList.get(i).productName,productsList.get(i).productLine, productsList.get(i).price));
+            }
+        }
+ }
  else{
       for(int i=0; i<productsList.size(); i++){
             if(productsList.get(i).productName.contains(findText.getText())){
@@ -414,6 +485,43 @@ loadProductInTable();        // TODO add your handling code here:
         if(discountText.getText().compareTo("")!=0){
         payments.setText(String.valueOf(amount - amount* (Float.valueOf(discountText.getText())/100)));}
     }//GEN-LAST:event_discountTextKeyReleased
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    
+     String nameOfFile = EmployeeTask.idTable+".txt";
+    try(BufferedWriter bw= new BufferedWriter(new FileWriter(nameOfFile)) ){
+        String words = notePresentsText.getText()+"";
+        bw.write(words);
+        JOptionPane.showMessageDialog(null, "Lưu thành công!");
+    } catch (IOException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        notePresentsText.setText("");
+
+//String nameOfFile = EmployeeTask.idTable+".txt";
+ //   try(BufferedWriter bw= new BufferedWriter(new FileWriter(nameOfFile)) ){
+ //       String words = "";
+ //       bw.write(words);
+ //       
+ //   } catch (IOException ex) {
+  //      Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+  //  }
+            // TODO add your handling code here:
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        refreshOrder(EmployeeTask.ordercodeString);        // TODO add your handling code here:
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void jTable3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable3MouseClicked
+        String idProduct = (String) jTable3.getValueAt(jTable3.getSelectedRow(), 1);
+       int jd= JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa sản phẩm này", "Cảnh Báo", JOptionPane.YES_NO_OPTION);
+       if(jd == JOptionPane.YES_OPTION){ 
+       deleteAProductFromOrder(idProduct, EmployeeTask.ordercodeString);  }      
+    }//GEN-LAST:event_jTable3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -445,7 +553,8 @@ loadProductInTable();        // TODO add your handling code here:
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-             new inforTable().setVisible(true);
+            it =  new inforTable();
+                    it.setVisible(true);
             }
         });
       
@@ -476,10 +585,10 @@ loadProductInTable();        // TODO add your handling code here:
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     public static javax.swing.JTable jTable3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField nameOfEmployee;
     private javax.swing.JTextField nameOfTbale;
     private javax.swing.JButton noteButton;
+    public javax.swing.JTextArea notePresentsText;
     public static javax.swing.JTextField payments;
     private javax.swing.JButton paymentsButton;
     private javax.swing.JButton refreshButton;
@@ -487,12 +596,7 @@ loadProductInTable();        // TODO add your handling code here:
     private javax.swing.JTextField timeStart;
     public static javax.swing.JTextField totalMoneyText;
     // End of variables declaration//GEN-END:variables
-public static String getStartDate(){
-    java.util.Date date = new java.util.Date();
-            DateFormat df = new SimpleDateFormat("hh:mm:ss  EEEE ,dd/MM/yyyy");
-	    String time = df.format(date);
-           return time;
-}
+
 public void loadProductInTable(){
 
  productsList = new ArrayList<>();
@@ -553,11 +657,23 @@ public void loadProductInTable(){
               }
           }
        }
-        
+        else if(jComboBox1.getSelectedItem().toString().compareTo("Bánh Kẹo")==0&&findText.getText().compareTo("")==0){
+              model.getDataVector().removeAllElements();
+           for(int i=0; i<productsList.size(); i++){
+              if(productsList.get(i).productLine.compareTo("Bánh Kẹo")==0){
+                  model.addRow(new Object[]{
+                     productsList.get(i).productCode  ,productsList.get(i).productName, productsList.get(i).price
+                  
+                  });
+            
+              }
+          }
+       }
 
 
 }
 public static void loadDataInBill() {
+   
      amount =0;
     if(EmployeeTask.orderList.size()>0){
      for(int i=0; i< EmployeeTask.orderList.size(); i++){
@@ -605,14 +721,15 @@ public void payments(String ordercode){
         EmployeeTask.loaddataInTable();
                  
                  
-               
+        JOptionPane.showMessageDialog(null, "Thanh Toán Thành Công");  
+        it.setVisible(false);
             }
     
     }
     catch(Exception e){
         e.printStackTrace();
     }
-
+    
 
 }
 public void clock(){
@@ -635,6 +752,87 @@ public void clock(){
     };clock.start();
     
 } 
-
+public void saveNoteforPresentOrder(int idtable) throws Exception{
+    String nameOfFile = idtable+".txt";
+    try(BufferedWriter bw= new BufferedWriter(new FileWriter(nameOfFile)) ){
+        String words = notePresentsText.getText()+"";
+        bw.write(words);
+      
+    } catch (IOException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    
+}
+public void loadNoteForPresentOrder(int idtable) throws Exception{
+    String nameOfFile = idtable+".txt";
+    String word = null;
+    String currentLine = null;
+    try(BufferedReader br = new BufferedReader(new FileReader(nameOfFile))){
+    while((currentLine =br.readLine())!=null){
+        word = word+  br.readLine();
+    }
+        notePresentsText.setText(word);
+    } catch (IOException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
+     
+}
+public void refreshOrder(String ordercode){
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL,Main.passwordSQL);
+        PreparedStatement pr = con.prepareStatement("DELETE FROM `orderdetail` WHERE `ordercode`=?");
+        pr.setString(1, ordercode);
+        pr.execute();
+         EmployeeTask.dataOfBill(EmployeeTask.idTable);
+        loadDataInBill();
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+       System.out.println("Đay là refresh lai bang ");
+       model.getDataVector().removeAllElements();
+       model.addRow(new Object[]{
+      null, null, null,null ,null} );
+       model.getDataVector().removeAllElements();
+    } 
+    catch (ClassNotFoundException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+public void deleteAProductFromOrder( String idProduct, String ordercode){
+    try{
+        if(EmployeeTask.orderList.size()==1){
+          DefaultTableModel model = (DefaultTableModel) jTable3.getModel();  
+          model.addRow(new Object[]{
+                   null, null, null,null ,null} );
+          model.getDataVector().removeAllElements();
+        }
+    Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL,Main.passwordSQL);
+        PreparedStatement pr = con.prepareStatement("DELETE FROM `orderdetail` WHERE `ordercode`=? AND productcode =?");
+        pr.setString(1, ordercode);
+        pr.setString(2, idProduct);
+        pr.execute();
+        EmployeeTask.dataOfBill(EmployeeTask.idTable);
+        loadDataInBill();
+    }
+    catch(Exception e){
+    e.printStackTrace();}
+}
+public void timeStart(String ordercode){
+    try{
+    Class.forName("com.mysql.jdbc.Driver");
+           Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
+            PreparedStatement pr = con.prepareStatement("SELECT * FROM `order` WHERE `ordercode`=?");
+            pr.setString(1, ordercode);
+            ResultSet rs = pr.executeQuery(); 
+              if(rs.next()){
+                  timeStart.setText(rs.getString(4));
+              }
+    }
+    catch(Exception e){
+        e.printStackTrace();
+    }
+}
 
 }

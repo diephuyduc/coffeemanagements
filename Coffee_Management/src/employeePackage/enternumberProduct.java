@@ -6,7 +6,13 @@
 package employeePackage;
 import java.sql.Connection;
 import java.sql.*;
-import model.*;
+import model.Main;
+import model.order;
+import model.User;
+import model.desk;
+import model.products;
+import model.reports;
+import model.TableColorCellRenderer;
 
 
 

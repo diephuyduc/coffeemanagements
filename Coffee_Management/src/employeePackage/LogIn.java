@@ -1,5 +1,11 @@
 package employeePackage;
-import model.*;
+import model.Main;
+import model.order;
+import model.User;
+import model.desk;
+import model.products;
+import model.reports;
+import model.TableColorCellRenderer;
 
 import static java.lang.Class.forName;
 import java.sql.*;
@@ -42,7 +48,6 @@ public  static LogIn a = new LogIn();
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         usernameL = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -51,6 +56,11 @@ public  static LogIn a = new LogIn();
         jButton3 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         passwordL = new javax.swing.JPasswordField();
+        jTextField1 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Đăng Nhập Hệ Thống Quản Lý Cà Phê");
@@ -59,65 +69,102 @@ public  static LogIn a = new LogIn();
         setMaximizedBounds(new java.awt.Rectangle(300, 200, 0, 0));
         setResizable(false);
 
+        jPanel1.setBackground(new java.awt.Color(153, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(1980, 1208));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel2.setBackground(new java.awt.Color(0, 255, 0));
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(-470, 0, 1100, 280));
-
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 153, 0));
         jLabel1.setText("Tên đăng nhập:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 330, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, -1, -1));
 
         usernameL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 usernameLActionPerformed(evt);
             }
         });
-        jPanel1.add(usernameL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 320, 340, 30));
+        jPanel1.add(usernameL, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 230, 380, 30));
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(51, 153, 0));
         jLabel2.setText("Mật khẩu:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 390, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, -1, -1));
 
+        loginBL.setBackground(new java.awt.Color(255, 255, 255));
+        loginBL.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        loginBL.setForeground(new java.awt.Color(0, 153, 51));
         loginBL.setText("Đăng Nhập");
         loginBL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 loginBLActionPerformed(evt);
             }
         });
-        jPanel1.add(loginBL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 440, 340, -1));
+        jPanel1.add(loginBL, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 340, 380, -1));
 
+        clearBL.setBackground(new java.awt.Color(153, 255, 255));
+        clearBL.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        clearBL.setForeground(new java.awt.Color(0, 153, 51));
         clearBL.setText("Xóa");
+        clearBL.setBorder(null);
+        clearBL.setBorderPainted(false);
         clearBL.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearBLActionPerformed(evt);
             }
         });
-        jPanel1.add(clearBL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 490, 140, -1));
+        jPanel1.add(clearBL, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 390, 140, -1));
 
+        jButton3.setBackground(new java.awt.Color(153, 255, 255));
+        jButton3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(0, 153, 51));
         jButton3.setText("Quên mật khẩu");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 490, 130, -1));
+        jButton3.setBorder(null);
+        jButton3.setBorderPainted(false);
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 390, 150, -1));
 
         jTextField2.setEditable(false);
+        jTextField2.setBackground(new java.awt.Color(153, 255, 255));
+        jTextField2.setForeground(new java.awt.Color(0, 102, 51));
         jTextField2.setBorder(null);
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 10, 250, 30));
-        jPanel1.add(passwordL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 380, 340, 30));
+        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 10, 250, 30));
+        jPanel1.add(passwordL, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 280, 380, 30));
+
+        jTextField1.setBackground(new java.awt.Color(102, 255, 255));
+        jTextField1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jTextField1.setForeground(new java.awt.Color(0, 153, 51));
+        jTextField1.setText("ĐĂNG NHẬP");
+        jTextField1.setBorder(null);
+        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 180, 450, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(0, 153, 51));
+        jLabel3.setText("Chào mừng đến với hệ thống quản lý coffee ");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 50, 460, 40));
+
+        jTextField3.setEditable(false);
+        jTextField3.setBackground(new java.awt.Color(153, 255, 255));
+        jTextField3.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        jTextField3.setForeground(new java.awt.Color(0, 153, 51));
+        jTextField3.setText("DREAM BEANS COFFEE");
+        jTextField3.setBorder(null);
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 100, 270, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, -1, -1));
+
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/1.png"))); // NOI18N
+        jLabel5.setText("jLabel5");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(-40, 10, 220, 170));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1044, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 707, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 601, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -181,17 +228,21 @@ public  static LogIn a = new LogIn();
     public static javax.swing.JButton jButton3;
     public static javax.swing.JLabel jLabel1;
     public static javax.swing.JLabel jLabel2;
+    public static javax.swing.JLabel jLabel3;
+    public static javax.swing.JLabel jLabel4;
+    public static javax.swing.JLabel jLabel5;
     public javax.swing.JPanel jPanel1;
-    public static javax.swing.JPanel jPanel2;
+    public static javax.swing.JTextField jTextField1;
     public javax.swing.JTextField jTextField2;
+    public static javax.swing.JTextField jTextField3;
     public static javax.swing.JButton loginBL;
     public javax.swing.JPasswordField passwordL;
     public javax.swing.JTextField usernameL;
     // End of variables declaration//GEN-END:variables
     public  void login(){
         try{
-            usernameL.setText("E001");
-            passwordL.setText("1");
+           // usernameL.setText("E001");
+          //  passwordL.setText("1");
            Class.forName("com.mysql.jdbc.Driver");
            Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
            String sql = "SELECT * FROM employees WHERE username =? AND password = ?";
