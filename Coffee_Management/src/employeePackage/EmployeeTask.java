@@ -43,7 +43,7 @@ public static ArrayList <order> orderList = new ArrayList<>();
 public static int count=0;
 public static  int idTable=0;
  ArrayList<products> productsList ;
- 
+ public static EmployeeTask ef;
 //public static int idTable=1;
     public EmployeeTask() {
         initComponents();
@@ -71,7 +71,9 @@ public static  int idTable=0;
         jTable2 = new javax.swing.JTable();
         timeL = new javax.swing.JTextField();
         helloName = new javax.swing.JTextField();
-        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jTextField2 = new javax.swing.JTextField();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -80,6 +82,7 @@ public static  int idTable=0;
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(0, 255, 255));
@@ -89,6 +92,7 @@ public static  int idTable=0;
         jPanel1.setBackground(new java.awt.Color(153, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -116,7 +120,7 @@ public static  int idTable=0;
         jTable1.setAlignmentY(1.0F);
         jTable1.setGridColor(new java.awt.Color(0, 0, 0));
         jTable1.setIntercellSpacing(new java.awt.Dimension(2, 2));
-        jTable1.setRowHeight(30);
+        jTable1.setRowHeight(35);
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable1MouseClicked(evt);
@@ -148,6 +152,7 @@ public static  int idTable=0;
         });
         jPanel1.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 390, -1));
 
+        jTable2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -178,15 +183,30 @@ public static  int idTable=0;
                 timeLActionPerformed(evt);
             }
         });
-        jPanel1.add(timeL, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 40, 250, 30));
+        jPanel1.add(timeL, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 10, 250, 30));
 
         helloName.setEditable(false);
         helloName.setBackground(new java.awt.Color(153, 255, 255));
         helloName.setBorder(null);
         jPanel1.add(helloName, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 10, 190, 30));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/u.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 0, -1, -1));
+        jLabel2.setFont(new java.awt.Font("Tekton Pro Ext", 1, 20)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(204, 51, 0));
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Logo-tasse-1 (2).png"))); // NOI18N
+        jLabel2.setText("DREAM BEANS COFFEE ");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(970, -10, -1, -1));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel9.setText("Team 5  © 2019");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(1200, 670, -1, -1));
+
+        jButton1.setText("Tạo nhanh hóa đơn");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1370, 770));
 
@@ -223,7 +243,7 @@ public static  int idTable=0;
 
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Edit");
+        jMenu2.setText("Account");
 
         jMenuItem2.setText("Chỉnh sửa thông tin");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -232,6 +252,14 @@ public static  int idTable=0;
             }
         });
         jMenu2.add(jMenuItem2);
+
+        jMenuItem5.setText("Đăng xuất");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
 
         jMenuBar1.add(jMenu2);
 
@@ -362,6 +390,19 @@ report r = new report();
       so.main();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+       int jd=  JOptionPane.showConfirmDialog(null, "Bạn có thực sự muốn đăng xuất", "Cảnh báo!", JOptionPane.YES_NO_OPTION);
+         if(jd==JOptionPane.YES_OPTION){
+           ef.setVisible(false);
+           LogIn.aa();}
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        CreateOrderCode(0, 0);
+        inforTable ift = new inforTable();
+       ift.i ();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -393,7 +434,8 @@ report r = new report();
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EmployeeTask().setVisible(true);
+               ef= new EmployeeTask();
+               ef.setVisible(true);
                 
             }
         });
@@ -402,8 +444,10 @@ report r = new report();
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JTextField findText;
     public javax.swing.JTextField helloName;
+    public javax.swing.JButton jButton1;
     public javax.swing.JComboBox<String> jComboBox1;
-    public javax.swing.JLabel jLabel1;
+    public javax.swing.JLabel jLabel2;
+    public javax.swing.JLabel jLabel9;
     public javax.swing.JMenu jMenu1;
     public javax.swing.JMenu jMenu2;
     public javax.swing.JMenuBar jMenuBar1;
@@ -411,6 +455,7 @@ report r = new report();
     public javax.swing.JMenuItem jMenuItem2;
     public javax.swing.JMenuItem jMenuItem3;
     public javax.swing.JMenuItem jMenuItem4;
+    public javax.swing.JMenuItem jMenuItem5;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JScrollPane jScrollPane2;
     public javax.swing.JScrollPane jScrollPane3;
@@ -424,6 +469,8 @@ report r = new report();
         ArrayList<desk> deskList = new ArrayList<>();
           model = (DefaultTableModel) jTable1.getModel();
           model.getDataVector().removeAllElements();
+          model.getDataVector().removeAllElements();
+         
         try{
            Class.forName("com.mysql.jdbc.Driver");
            Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
@@ -452,11 +499,15 @@ report r = new report();
       }
      TableColorCellRenderer renderer = new TableColorCellRenderer();
      jTable1.setDefaultRenderer(Object.class, renderer);
+  if(idTable>0){
+      jTable1.setRowSelectionInterval(idTable-1, idTable-1);
+  }
     
     }
 public  void loadProductInTable(){
      productsList = new ArrayList<>();
        model = (DefaultTableModel) jTable2.getModel();
+       model.getDataVector().removeAllElements();
        model.getDataVector().removeAllElements();
         try{
            Class.forName("com.mysql.jdbc.Driver");
@@ -567,7 +618,7 @@ public static void dataOfBill(int idTable){
  try{
        Class.forName("com.mysql.jdbc.Driver");
    Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
-    String sql = "SELECT * FROM `order` WHERE `tablenumber`=? AND `status` IS NULL";
+    String sql = "SELECT * FROM `orders` WHERE `tablenumber`=? AND `status` IS NULL";
     PreparedStatement pr = con.prepareStatement(sql);
     pr.setInt(1, idTable);
     ResultSet rs = pr.executeQuery();
@@ -610,7 +661,7 @@ public static  void CreateOrderCode(int dem, int idtable ){
          System.out.print("Đya la them mot hoa don môi");
        Class.forName("com.mysql.jdbc.Driver");
        Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
-       String sql1 = "INSERT INTO `order`(`ordercode`, `tablenumber`, `employeenumber`, `startingtime`) VALUES (?, ?, ?, ?)";
+       String sql1 = "INSERT INTO `orders`(`ordercode`, `tablenumber`, `employeenumber`, `startingtime`) VALUES (?, ?, ?, ?)";
        PreparedStatement pr = con.prepareStatement(sql1);
        pr.setString(1, timeSQL);
        pr.setInt(2, idtable);

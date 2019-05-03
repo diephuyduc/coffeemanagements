@@ -5,6 +5,7 @@
  */
 package employeePackage;
 
+import java.awt.event.WindowEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -53,6 +54,14 @@ public static ArrayList <User> user1 = new ArrayList<>();
         jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+		addWindowListener(new java.awt.event.WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e){
+				user1.clear();
+				System.out.println("Closing"+user1.size());
+				
+			}
+		});
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -108,10 +117,10 @@ public static ArrayList <User> user1 = new ArrayList<>();
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jTextField1))))
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -244,7 +253,7 @@ public static ArrayList <User> user1 = new ArrayList<>();
         }
         else{
         for(int i=0; i<user1.size(); i++){
-            if(user1.get(i).fullname.contains(text)){
+            if(user1.get(i).fullname.contains(text.toLowerCase())){
                 user2.add(new User(user1.get(i).idUsers, user1.get(i).fullname, user1.get(i).address, user1.get(i).email, user1.get(i).username, user1.get(i).password, user1.get(i).phonenumber));
             }
         }

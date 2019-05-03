@@ -27,6 +27,7 @@ public class EditInforMation extends javax.swing.JFrame {
     public EditInforMation() {
         initComponents();
         loadInfor();
+        newpasswordE.requestFocusInWindow();
     }
 
     /**
@@ -102,6 +103,18 @@ public class EditInforMation extends javax.swing.JFrame {
 
         jLabel9.setText("Mật khẩu hiện tại: ");
 
+        newpasswordE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                newpasswordEKeyPressed(evt);
+            }
+        });
+
+        renewpasswordE.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                renewpasswordEKeyPressed(evt);
+            }
+        });
+
         updateButtonE.setText("Cập Nhật");
         updateButtonE.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,6 +131,7 @@ public class EditInforMation extends javax.swing.JFrame {
 
         errorE.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
         errorE.setForeground(new java.awt.Color(204, 0, 0));
+        errorE.setBorder(null);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -262,6 +276,17 @@ updatePassword();        // TODO add your handling code here:
         passwordE.setText("");
         // TODO add your handling code here:
     }//GEN-LAST:event_clearButtonEActionPerformed
+
+    private void newpasswordEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_newpasswordEKeyPressed
+            if(evt.getKeyCode() ==10){
+                renewpasswordE.requestFocus();
+            }        // TODO add your handling code here:
+    }//GEN-LAST:event_newpasswordEKeyPressed
+
+    private void renewpasswordEKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_renewpasswordEKeyPressed
+if(evt.getKeyCode()==10){
+passwordE.requestFocus();}        // TODO add your handling code here:
+    }//GEN-LAST:event_renewpasswordEKeyPressed
 
     /**
      * @param args the command line arguments

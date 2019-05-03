@@ -1,6 +1,11 @@
 package model;
 
 import employeePackage.LogIn;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 
@@ -23,10 +28,18 @@ public static String passwordSQL ="";
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // TODO code application logic here
-         LogIn start = new LogIn();
-         start.aa();
+         
+         File dr = new File("C://Coffee Management");
+         if(!dr.exists()){
+        File dr1 = new File("C://Coffee Management");
+        if (dr1.mkdirs()) {
+	
+}
+         }
+        LogIn start = new LogIn();
+         start.aa(); 
          
     }
     

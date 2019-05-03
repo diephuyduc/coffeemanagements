@@ -176,7 +176,7 @@ public static showDetailsOfOrder sdoo;
         });
     }
     public static void loadDetails(String ordercode, float discounts){
-        float total=0;
+    float total=0;
     DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
     model.getDataVector().removeAllElements();
    Connection con;

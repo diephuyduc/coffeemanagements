@@ -272,8 +272,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="newpasswordE">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="newpasswordEKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JPasswordField" name="renewpasswordE">
+          <Events>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="renewpasswordEKeyPressed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JPasswordField" name="passwordE">
         </Component>
@@ -300,6 +306,9 @@
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="cc" type="rgb"/>
+            </Property>
+            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+              <Border info="null"/>
             </Property>
           </Properties>
         </Component>

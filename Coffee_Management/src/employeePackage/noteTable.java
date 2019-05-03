@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import model.Main;
 
 /**
@@ -24,6 +25,7 @@ public static noteTable nt;
     public noteTable() {
         initComponents();
         loadnote();
+        noteText.requestFocusInWindow();
     }
 
     /**
@@ -134,12 +136,14 @@ noteText.setText("");        // TODO add your handling code here:
                 pr.setString(1, noteText.getText()  );
                 pr.setInt(2, EmployeeTask.idTable);
                 pr.execute();
-                nt.setVisible(false);
                 
-                con.close();
-                EmployeeTask.loaddataInTable();
-                EmployeeTask.loaddataInTable();
+                
                 JOptionPane.showMessageDialog(null, "Update successful!");
+                DefaultTableModel model1 = (DefaultTableModel) EmployeeTask.jTable1.getModel();
+                EmployeeTask.loaddataInTable();
+              // EmployeeTask.jTable1.setRowSelectionInterval(EmployeeTask.idTable-1, EmployeeTask.idTable-1);
+                
+                nt.setVisible(false);
             }
             catch(Exception e){
             e.printStackTrace();}

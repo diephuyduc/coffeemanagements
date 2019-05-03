@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package employeePackage;
+import java.awt.event.WindowEvent;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
@@ -29,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -53,6 +55,7 @@ public static ArrayList<products> productsList;
 public static float amount;
 public static inforTable it ;
 public static enternumberProduct ep;
+public static int discount = 0;
     /**
      * Creates new form inforTable
      */
@@ -64,18 +67,9 @@ public static enternumberProduct ep;
         timeStart(EmployeeTask.ordercodeString);
         loadProductInTable();
         loadDataInBill();
-        System.out.println("Day la id cua table "+EmployeeTask.idTable);
+     //   System.out.println("Day la id cua table "+EmployeeTask.idTable);
          nameOfTbale.setText(String.valueOf(EmployeeTask.idTable));
-    try {
-        saveNoteforPresentOrder(EmployeeTask.idTable);
-    } catch (Exception ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    try {
-        loadNoteForPresentOrder(EmployeeTask.idTable);
-    } catch (Exception ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    }
+      
     }
 
     /**
@@ -103,11 +97,6 @@ public static enternumberProduct ep;
         timeStart = new javax.swing.JTextField();
         timeNow = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
-        jLabel11 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        notePresentsText = new javax.swing.JTextArea();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         totalMoneyText = new javax.swing.JTextField();
@@ -117,11 +106,13 @@ public static enternumberProduct ep;
         payments = new javax.swing.JTextField();
         paymentsButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Thông tin bàn");
         setBackground(new java.awt.Color(255, 255, 255));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -240,44 +231,29 @@ public static enternumberProduct ep;
         jPanel2.setBackground(new java.awt.Color(153, 255, 255));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel11.setText("GHI CHÚ:");
-        jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, 66, -1));
-
-        notePresentsText.setColumns(20);
-        notePresentsText.setLineWrap(true);
-        notePresentsText.setRows(5);
-        jScrollPane3.setViewportView(notePresentsText);
-
-        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 32, 272, 107));
-
-        jButton3.setText("Cập nhật");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, -1, -1));
-
-        jButton4.setText("Xóa");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 150, 65, -1));
-
+        jLabel12.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel12.setText("THANH TOÁN:");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 0, 88, -1));
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 88, -1));
 
         jLabel13.setText("Tổng tiền: ");
-        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 32, -1, -1));
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
         totalMoneyText.setEditable(false);
         totalMoneyText.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        jPanel2.add(totalMoneyText, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 22, 335, 30));
+        totalMoneyText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalMoneyTextActionPerformed(evt);
+            }
+        });
+        totalMoneyText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                totalMoneyTextKeyReleased(evt);
+            }
+        });
+        jPanel2.add(totalMoneyText, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 30, 640, 30));
 
         jLabel14.setText("Giảm giá :");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 73, -1, -1));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, -1, -1));
 
         discountText.setText("0");
         discountText.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -285,13 +261,13 @@ public static enternumberProduct ep;
                 discountTextKeyReleased(evt);
             }
         });
-        jPanel2.add(discountText, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 60, 335, 30));
+        jPanel2.add(discountText, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 70, 640, 30));
 
         jLabel15.setText("Tổng thanh toán :");
-        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 114, -1, -1));
+        jPanel2.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 120, -1, -1));
 
         payments.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
-        jPanel2.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 98, 340, 30));
+        jPanel2.add(payments, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 110, 640, 30));
 
         paymentsButton.setText("In hóa đơn và thanh toán");
         paymentsButton.addActionListener(new java.awt.event.ActionListener() {
@@ -299,10 +275,14 @@ public static enternumberProduct ep;
                 paymentsButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(paymentsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(437, 149, 343, -1));
+        jPanel2.add(paymentsButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 150, 640, -1));
 
         jLabel9.setText("      ");
         jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 570, -1, -1));
+
+        jLabel6.setFont(new java.awt.Font("Tahoma", 2, 11)); // NOI18N
+        jLabel6.setText("Team 5 © 2019");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(670, 180, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 400, 790, 200));
 
@@ -331,6 +311,7 @@ public static enternumberProduct ep;
         });
         jTable3.setFocusable(false);
         jTable3.setGridColor(new java.awt.Color(255, 255, 255));
+        jTable3.setIntercellSpacing(new java.awt.Dimension(0, 0));
         jTable3.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable3MouseClicked(evt);
@@ -384,7 +365,9 @@ loadProductInTable();        // TODO add your handling code here:
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void paymentsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentsButtonActionPerformed
-        payments(EmployeeTask.ordercodeString);        // TODO add your handling code here:
+        payments(EmployeeTask.ordercodeString);  
+        printfbill();
+        // TODO add your handling code here:
     }//GEN-LAST:event_paymentsButtonActionPerformed
 
     private void findTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findTextActionPerformed
@@ -486,32 +469,6 @@ loadProductInTable();        // TODO add your handling code here:
         payments.setText(String.valueOf(amount - amount* (Float.valueOf(discountText.getText())/100)));}
     }//GEN-LAST:event_discountTextKeyReleased
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-    
-     String nameOfFile = EmployeeTask.idTable+".txt";
-    try(BufferedWriter bw= new BufferedWriter(new FileWriter(nameOfFile)) ){
-        String words = notePresentsText.getText()+"";
-        bw.write(words);
-        JOptionPane.showMessageDialog(null, "Lưu thành công!");
-    } catch (IOException ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        notePresentsText.setText("");
-
-//String nameOfFile = EmployeeTask.idTable+".txt";
- //   try(BufferedWriter bw= new BufferedWriter(new FileWriter(nameOfFile)) ){
- //       String words = "";
- //       bw.write(words);
- //       
- //   } catch (IOException ex) {
-  //      Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-  //  }
-            // TODO add your handling code here:
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         refreshOrder(EmployeeTask.ordercodeString);        // TODO add your handling code here:
     }//GEN-LAST:event_refreshButtonActionPerformed
@@ -522,6 +479,15 @@ loadProductInTable();        // TODO add your handling code here:
        if(jd == JOptionPane.YES_OPTION){ 
        deleteAProductFromOrder(idProduct, EmployeeTask.ordercodeString);  }      
     }//GEN-LAST:event_jTable3MouseClicked
+
+    private void totalMoneyTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalMoneyTextActionPerformed
+             
+    }//GEN-LAST:event_totalMoneyTextActionPerformed
+
+    private void totalMoneyTextKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalMoneyTextKeyReleased
+   
+      
+    }//GEN-LAST:event_totalMoneyTextKeyReleased
 
     /**
      * @param args the command line arguments
@@ -565,11 +531,8 @@ loadProductInTable();        // TODO add your handling code here:
     public static javax.swing.JTextField discountText;
     private javax.swing.JTextField findText;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -578,17 +541,16 @@ loadProductInTable();        // TODO add your handling code here:
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable jTable1;
     public static javax.swing.JTable jTable3;
     private javax.swing.JTextField nameOfEmployee;
     private javax.swing.JTextField nameOfTbale;
     private javax.swing.JButton noteButton;
-    public javax.swing.JTextArea notePresentsText;
     public static javax.swing.JTextField payments;
     private javax.swing.JButton paymentsButton;
     private javax.swing.JButton refreshButton;
@@ -676,13 +638,14 @@ public static void loadDataInBill() {
    
      amount =0;
     if(EmployeeTask.orderList.size()>0){
-     for(int i=0; i< EmployeeTask.orderList.size(); i++){
-     System.out.print( i+1+EmployeeTask.orderList.get(i).productcode+EmployeeTask.orderList.get(i).nameProducts+ EmployeeTask.orderList.get(i).number+ EmployeeTask.orderList.get(i).pricecode);
-      amount= amount +EmployeeTask.orderList.get(i).number* EmployeeTask.orderList.get(i).pricecode;
-     }
+    // for(int i=0; i< EmployeeTask.orderList.size(); i++){
+    // System.out.print( i+1+EmployeeTask.orderList.get(i).productcode+EmployeeTask.orderList.get(i).nameProducts+ EmployeeTask.orderList.get(i).number+ EmployeeTask.orderList.get(i).pricecode);
+   //   amount= amount +EmployeeTask.orderList.get(i).number* EmployeeTask.orderList.get(i).pricecode;
+   //  }
     DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
     model.getDataVector().removeAllElements();
     for(int i=0; i< EmployeeTask.orderList.size(); i++){
+       amount= amount +EmployeeTask.orderList.get(i).number* EmployeeTask.orderList.get(i).pricecode; 
         model.addRow(new Object[]{
            i+1, EmployeeTask.orderList.get(i).productcode, EmployeeTask.orderList.get(i).nameProducts, EmployeeTask.orderList.get(i).number, EmployeeTask.orderList.get(i).pricecode
                 
@@ -702,12 +665,12 @@ public void payments(String ordercode){
     try{
     Class.forName("com.mysql.jdbc.Driver");
            Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
-            PreparedStatement pr = con.prepareStatement("SELECT * FROM `order` WHERE `ordercode`=?");
+            PreparedStatement pr = con.prepareStatement("SELECT * FROM `orders` WHERE `ordercode`=?");
             pr.setString(1, ordercode);
             ResultSet rs = pr.executeQuery(); 
             if(rs.next()){
                 idTable = rs.getInt(2);
-                PreparedStatement pr1 = con.prepareStatement("UPDATE `order` SET `discount`=?,`status`=? WHERE `ordercode`=?");
+                PreparedStatement pr1 = con.prepareStatement("UPDATE `orders` SET `discount`=?,`status`=? WHERE `ordercode`=?");
                 pr1.setInt(1,Integer.valueOf( discountText.getText()));
                 pr1.setString(2, "Đã Thanh Toán");
                 pr1.setString(3, ordercode);
@@ -719,7 +682,7 @@ public void payments(String ordercode){
          stm.setInt(2, idTable );
         stm.execute();
         EmployeeTask.loaddataInTable();
-                 
+                
                  
         JOptionPane.showMessageDialog(null, "Thanh Toán Thành Công");  
         it.setVisible(false);
@@ -752,53 +715,7 @@ public void clock(){
     };clock.start();
     
 } 
-public void saveNoteforPresentOrder(int idtable) throws Exception{
-    String nameOfFile = idtable+".txt";
-    try(BufferedWriter bw= new BufferedWriter(new FileWriter(nameOfFile)) ){
-        String words = notePresentsText.getText()+"";
-        bw.write(words);
-      
-    } catch (IOException ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    }
-    
-}
-public void loadNoteForPresentOrder(int idtable) throws Exception{
-    String nameOfFile = idtable+".txt";
-    String word = null;
-    String currentLine = null;
-    try(BufferedReader br = new BufferedReader(new FileReader(nameOfFile))){
-    while((currentLine =br.readLine())!=null){
-        word = word+  br.readLine();
-    }
-        notePresentsText.setText(word);
-    } catch (IOException ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    }
-     
-}
-public void refreshOrder(String ordercode){
-    try {
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL,Main.passwordSQL);
-        PreparedStatement pr = con.prepareStatement("DELETE FROM `orderdetail` WHERE `ordercode`=?");
-        pr.setString(1, ordercode);
-        pr.execute();
-         EmployeeTask.dataOfBill(EmployeeTask.idTable);
-        loadDataInBill();
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-       System.out.println("Đay là refresh lai bang ");
-       model.getDataVector().removeAllElements();
-       model.addRow(new Object[]{
-      null, null, null,null ,null} );
-       model.getDataVector().removeAllElements();
-    } 
-    catch (ClassNotFoundException ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
-    }
-}
+
 public void deleteAProductFromOrder( String idProduct, String ordercode){
     try{
         if(EmployeeTask.orderList.size()==1){
@@ -823,7 +740,7 @@ public void timeStart(String ordercode){
     try{
     Class.forName("com.mysql.jdbc.Driver");
            Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
-            PreparedStatement pr = con.prepareStatement("SELECT * FROM `order` WHERE `ordercode`=?");
+            PreparedStatement pr = con.prepareStatement("SELECT * FROM `orders` WHERE `ordercode`=?");
             pr.setString(1, ordercode);
             ResultSet rs = pr.executeQuery(); 
               if(rs.next()){
@@ -834,5 +751,80 @@ public void timeStart(String ordercode){
         e.printStackTrace();
     }
 }
+public void refreshOrder(String ordercode){
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL,Main.passwordSQL);
+        PreparedStatement pr = con.prepareStatement("DELETE FROM `orderdetail` WHERE `ordercode`=?");
+        pr.setString(1, ordercode);
+        pr.execute();
+         EmployeeTask.dataOfBill(EmployeeTask.idTable);
+        loadDataInBill();
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+       System.out.println("Đay là refresh lai bang ");
+       model.getDataVector().removeAllElements();
+       model.addRow(new Object[]{
+      null, null, null,null ,null} );
+       model.getDataVector().removeAllElements();
+    } 
+    catch (ClassNotFoundException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(inforTable.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
+public void printfbill(){
+
+      
+    float discount = 0;
+    float totalmoney = 0;
+    String timestart = null;
+    String status = null;
+    try{
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
+        String sql= "SELECT * FROM `orders` WHERE `ordercode`=?";
+        
+        PreparedStatement pr = con.prepareStatement(sql);
+        pr.setString(1, EmployeeTask.ordercodeString);
+        ResultSet rs = pr.executeQuery();
+        if(rs.next()){
+            timestart= rs.getString(4);
+            discount = rs.getFloat(5);
+            status = rs.getString(6);
+        }
+    }
+    
+    
+    catch(Exception e){
+    e.printStackTrace();}
+  try{
+        
+        Formatter f = new Formatter("C://Coffee Management//PrintBill.txt");
+        f.format("*DREAM BEANS COFFEE*\r\n", null);
+        f.format("---HÓA ĐƠN THANH TOÁN---\n", null);
+        f.format("Mã Hóa Đơn: %s\n", EmployeeTask.ordercodeString);
+        f.format("Giờ vào: %s\n", timestart);
+        f.format("NV: %s\n------------------------------------\n", LogIn.saveUsernameString);
+        f.format("%4s %4s %15s %3s %7s\n","STT", "Mã SP", "Tên SP", "SL", "Giá");
+        
+        for(int i=0; i<EmployeeTask.orderList.size(); i++){
+            f.format("%4d %4s %15s %3d %7d\n" ,i+1, EmployeeTask.orderList.get(i).productcode, EmployeeTask.orderList.get(i).nameProducts, EmployeeTask.orderList.get(i).number, EmployeeTask.orderList.get(i).pricecode);
+            totalmoney = totalmoney + EmployeeTask.orderList.get(i).number* EmployeeTask.orderList.get(i).pricecode;
+        }
+        f.format("------------------------------------\nTổng tiền: %f\n", totalmoney);
+        f.format("Giảm giá: %f\n", discount);
+        f.format("Tổng tiền thanh toán: %f\n", totalmoney - totalmoney*(discount/100));
+        f.format("%s\n", status);
+        f.format("Hân hạnh phục vụ bạn!\n", null);
+        f.format("Fanpage:http://facebook.com/dreambeanscoffe_hn\nLiên hệ: 01234567899\nSố 1 Phạm Văn Đồng, Cầu Giấy, Hà Nội", null);
+	    f.close();
+
+	} catch (Exception e) {
+	    System.out.println("Error");
+            e.printStackTrace();
+	}
+    }
+
 
 }

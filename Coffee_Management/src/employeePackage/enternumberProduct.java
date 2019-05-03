@@ -40,6 +40,7 @@ public static enternumberProduct ep;
         setName();
         nameProduct.setText("");
         nameProduct.setText(inforTable.orderAdd.getNameProducts());
+        numberOfProductText.requestFocusInWindow();
     }
 
     /**
@@ -70,6 +71,11 @@ public static enternumberProduct ep;
         numberOfProductText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 numberOfProductTextActionPerformed(evt);
+            }
+        });
+        numberOfProductText.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                numberOfProductTextKeyPressed(evt);
             }
         });
 
@@ -181,6 +187,62 @@ public static enternumberProduct ep;
     private void numberOfProductTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberOfProductTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_numberOfProductTextActionPerformed
+
+    private void numberOfProductTextKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_numberOfProductTextKeyPressed
+        if(evt.getKeyCode() ==10){
+        if(numberOfProductText.getText().compareTo("")!=0){
+           
+            try{inforTable.orderAdd.setNumber(Integer.valueOf(numberOfProductText.getText()));}
+            catch(Exception e){e.printStackTrace();}
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                Connection con = DriverManager.getConnection(Main.url, Main.usernameSQL, Main.passwordSQL);
+                String sql1 = "SELECT * FROM orderdetail WHERE ordercode =? AND productcode =?";
+                PreparedStatement pr1 = con.prepareStatement(sql1);
+                pr1.setString(1,inforTable.orderAdd.getOrdercode() );
+                pr1.setString(2, inforTable.orderAdd.productcode);
+                ResultSet rs = pr1.executeQuery();
+                
+                if(rs.next()){
+                    
+                    String sqlUpdate = "UPDATE orderdetail set number =? WHERE ordercode =? AND productcode =?";
+                    PreparedStatement prUpdate = con.prepareStatement(sqlUpdate);
+                    int sl=0;
+                    sl= rs.getInt(4) + Integer.valueOf(numberOfProductText.getText());
+                    prUpdate.setInt(1, sl);
+                    prUpdate.setString(2,inforTable.orderAdd.getOrdercode() );
+                    prUpdate.setString(3, inforTable.orderAdd.productcode);
+                    prUpdate.execute();
+                 con.close();
+                }
+                
+                else{
+                String sql = "INSERT INTO orderdetail values (?,?,?,?,?)";
+                PreparedStatement pr = con.prepareStatement(sql);
+                pr.setString(1, inforTable.orderAdd.getOrdercode());
+                pr.setString(2, inforTable.orderAdd.getProductcode());
+                 pr.setString(3, inforTable.orderAdd.getNameProducts());
+                 pr.setInt(4, inforTable.orderAdd.getNumber());
+                 pr.setInt(5, inforTable.orderAdd.getPricecode());
+                 pr.execute();
+                 
+                 con.close();
+                }
+            }
+            catch(Exception e){
+            e.printStackTrace();}
+        
+       
+                 EmployeeTask.dataOfBill(EmployeeTask.idTable);
+                 inforTable.loadDataInBill();
+                ep.setVisible(false);
+        }
+        
+        
+        }
+
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numberOfProductTextKeyPressed
 
     /**
      * @param args the command line arguments
